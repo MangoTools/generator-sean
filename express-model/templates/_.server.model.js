@@ -1,17 +1,16 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
-
-/**
  * <%= classifiedModelName %> Schema
  */
-var <%= classifiedModelName %>Schema = new Schema({
-	// <%= classifiedModelName %> model fields   
-	// ...
-});
+module.exports = function(sequelize, DataTypes) {
+  var <%= classifiedModelName %> = sequelize.define('<%= classifiedModelName %>', {
 
-mongoose.model('<%= classifiedModelName %>', <%= classifiedModelName %>Schema);
+    },
+    {
+      associate: function(models){
+        // Association goes here
+      }
+    });
+  return <%= classifiedModelName %>;
+};
