@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/generator-sean.iml" filepath="$PROJECT_DIR$/.idea/generator-sean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sean/.idea/sean.iml" filepath="$PROJECT_DIR$/../sean/.idea/sean.iml" />
+    </modules>
+  </component>
+</project>
+
