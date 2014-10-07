@@ -143,7 +143,9 @@ module.exports = function(sequelize, DataTypes) {
                 }
             },
             associate: function(models) {
+            <% if (addArticleExample) { %>
                 User.hasMany(models.Article);
+            <% } %>
             },
             hooks: {
                 beforeCreate: cryptPassword

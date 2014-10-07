@@ -203,7 +203,8 @@ var SeanGenerator = yeoman.generators.Base.extend({
 	},
 
 	renderCoreModuleFiles: function() {
-		this.template('public/modules/core/views/_header.client.view.html', 'public/modules/core/views/header.client.view.html');
+    this.template('app/models/_user.server.model.js', 'app/models/user.server.model.js');
+    this.template('public/modules/core/views/_header.client.view.html', 'public/modules/core/views/header.client.view.html');
 	},
 
 	renderApplicationDependenciesFiles: function() {
