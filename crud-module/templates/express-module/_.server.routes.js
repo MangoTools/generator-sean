@@ -1,9 +1,12 @@
 'use strict';
 
-module.exports = function(app) {
-	var users = require('../../app/controllers/users');
-	var <%= camelizedPluralName %> = require('../../app/controllers/<%= slugifiedPluralName %>');
+/**
+ * Module dependencies.
+ */
+var users = require('../../app/controllers/users');
+var <%= camelizedPluralName %> = require('../../app/controllers/<%= slugifiedPluralName %>');
 
+module.exports = function(app) {
 	// <%= humanizedPluralName %> Routes
 	app.route('/api/<%= slugifiedPluralName %>')
 		.get(<%= camelizedPluralName %>.list)
