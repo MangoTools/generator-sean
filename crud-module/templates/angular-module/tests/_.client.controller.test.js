@@ -98,7 +98,7 @@
 
 			// Create a sample <%= humanizedSingularName %> response
 			var sample<%= classifiedSingularName %>Response = new <%= classifiedPluralName %>({
-				_id: '525cf20451979dea2c000001',
+				id: '525cf20451979dea2c000001',
 				name: 'New <%= humanizedSingularName %>'
 			});
 
@@ -116,13 +116,13 @@
 			expect(scope.name).toEqual('');
 
 			// Test URL redirection after the <%= humanizedSingularName %> was created
-			expect($location.path()).toBe('/<%= slugifiedPluralName %>/' + sample<%= classifiedSingularName %>Response._id);
+			expect($location.path()).toBe('/<%= slugifiedPluralName %>/' + sample<%= classifiedSingularName %>Response.id);
 		}));
 
 		it('$scope.update() should update a valid <%= humanizedSingularName %>', inject(function(<%= classifiedPluralName %>) {
 			// Define a sample <%= humanizedSingularName %> put data
 			var sample<%= classifiedSingularName %>PutData = new <%= classifiedPluralName %>({
-				_id: '525cf20451979dea2c000001',
+				id: '525cf20451979dea2c000001',
 				name: 'New <%= humanizedSingularName %>'
 			});
 
@@ -137,13 +137,13 @@
 			$httpBackend.flush();
 
 			// Test URL location to new object
-			expect($location.path()).toBe('/<%= slugifiedPluralName %>/' + sample<%= classifiedSingularName %>PutData._id);
+			expect($location.path()).toBe('/<%= slugifiedPluralName %>/' + sample<%= classifiedSingularName %>PutData.id);
 		}));
 
 		it('$scope.remove() should send a DELETE request with a valid <%= camelizedSingularName %>Id and remove the <%= humanizedSingularName %> from the scope', inject(function(<%= classifiedPluralName %>) {
 			// Create new <%= humanizedSingularName %> object
 			var sample<%= classifiedSingularName %> = new <%= classifiedPluralName %>({
-				_id: '525a8422f6d0f87f0e407a33'
+				id: '525a8422f6d0f87f0e407a33'
 			});
 
 			// Create new <%= humanizedPluralName %> array and include the <%= humanizedSingularName %>
