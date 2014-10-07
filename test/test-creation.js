@@ -8,7 +8,7 @@ var assert = require('assert');
 var exec = require('child_process').exec;
 var async = require('async');
 
-describe('meanjs generator', function() {
+describe('sean generator', function() {
 	var expectedProjectFiles = [
 		// Should create views
 		"app/views/404.server.view.html",
@@ -157,7 +157,7 @@ describe('meanjs generator', function() {
 			runGenerator('app',
 				'',
 				this, {
-					'appName': 'MEAN',
+					'appName': 'SEAN',
 					'appDescription': 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
 					'appKeywords': 'MongoDB, Express, AngularJS, Node.js',
 					'appAuthor': 'Test',
@@ -176,7 +176,7 @@ describe('meanjs generator', function() {
 			runGenerator('app',
 				'',
 				this, {
-					'appName': 'MEAN',
+					'appName': 'SEAN',
 					'appDescription': 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
 					'appKeywords': 'MongoDB, Express, AngularJS, Node.js',
 					'appAuthor': 'Test',
@@ -389,7 +389,7 @@ function runGenerator(generatorType, name, context, promptAnswers, done) {
 			return done(err);
 		}
 
-		this.app = helpers.createGenerator('meanjs:' + generatorType, [
+		this.app = helpers.createGenerator('sean:' + generatorType, [
 			path.resolve(__dirname, '../' + generatorType)
 		], [name]);
 
