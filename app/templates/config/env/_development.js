@@ -1,9 +1,15 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/<%= slugifiedAppName %>-dev',
+	db: {
+       dbName:'<%= slugifiedAppName %>-dev',
+       username : 'SeanDB',
+       password : 'HU7XQQBNWq',
+       dialect: "postgres", // 'sqlite', 'postgres', 'mariadb','mysql'
+       port : 5432 //    5432 for postgres, 3306 for mysql and mariaDB ,
+    },
 	app: {
-		title: '<%= appName %> - Development Environment'
+		title: 'SEAN - Development Environment'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

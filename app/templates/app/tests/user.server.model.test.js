@@ -4,8 +4,7 @@
  * Module dependencies.
  */
 var should = require('should'),
-	mongoose = require('mongoose'),
-	User = mongoose.model('User');
+    db = require('../../config/sequelize');
 
 /**
  * Globals
@@ -17,7 +16,7 @@ var user, user2;
  */
 describe('User Model Unit Tests:', function() {
 	before(function(done) {
-		user = new User({
+		user = db.User.build({
 			firstName: 'Full',
 			lastName: 'Name',
 			displayName: 'Full Name',
@@ -26,7 +25,7 @@ describe('User Model Unit Tests:', function() {
 			password: 'password',
 			provider: 'local'
 		});
-		user2 = new User({
+		user2 = db.User.build({
 			firstName: 'Full',
 			lastName: 'Name',
 			displayName: 'Full Name',
@@ -41,27 +40,29 @@ describe('User Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
 		it('should begin with no users', function(done) {
-			User.find({}, function(err, users) {
-				users.should.have.length(0);
+			db.User.findAll().done(function(err, users) {
+                users.should.have.length(0);
 				done();
 			});
 		});
 
 		it('should be able to save without problems', function(done) {
-			user.save(done);
+			user.save().done(done);
 		});
 
 		it('should fail to save an existing user again', function(done) {
-			user.save();
-			return user2.save(function(err) {
-				should.exist(err);
-				done();
-			});
+			user.save().done(function(err, user){
+                user2.save().done(function(err) {
+                    should.exist(err);
+                    done();
+                });
+            });
+
 		});
 
 		it('should be able to show an error when try to save without first name', function(done) {
 			user.firstName = '';
-			return user.save(function(err) {
+			return user.save().done(function(err) {
 				should.exist(err);
 				done();
 			});
@@ -69,7 +70,7 @@ describe('User Model Unit Tests:', function() {
 	});
 
 	after(function(done) {
-		User.remove().exec();
+		db.User.destroy().done(function(err){/*console.log(err);*/});
 		done();
 	});
 });

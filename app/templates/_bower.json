@@ -1,18 +1,22 @@
 {
-	"name": "<%= slugifiedAppName %>",
-	"version": "0.0.1",
-	"description": "<%= appDescription %>",
-	"dependencies": {
-		"bootstrap": "~3",
-		"angular": "~1.2",
-		"angular-resource": "~1.2",
-		"angular-mocks": "~1.2",<% if (angularCookies) { %>
-		"angular-cookies": "~1.2",<% } if (angularAnimate) { %>
-		"angular-animate": "~1.2",<% } if (angularTouch) { %>
-		"angular-touch": "~1.2",<% } if (angularSanitize) { %>
-		"angular-sanitize": "~1.2",<% } %>
-		"angular-bootstrap": "~0.11.0",
-		"angular-ui-utils": "~0.1.1",
-		"angular-ui-router": "~0.2.10"
-	}
+    "name": "<%= slugifiedAppName %>",
+    "version": "0.0.1",
+    "description": "<%= appDescription %>",
+    "dependencies": {
+    "bootstrap": "~3.2",
+    "angular": "~1.2",
+    "angular-resource": "~1.2",
+    "angular-mocks": "~1.2",<% if (angularCookies) { %>
+    "angular-cookies": "~1.2",<% } if (angularAnimate) { %>
+    "angular-animate": "~1.2",<% } if (angularTouch) { %>
+    "angular-touch": "~1.2",<% } if (angularSanitize) { %>
+    "angular-sanitize": "~1.2",<% } %>
+    "angular-bootstrap": "0.11.0",
+    "angular-ui-utils": "~0.1.1",
+    "angular-ui-router": "~0.2.10",
+    "socket.io-client": "~1.1.0",
+    "angular-socket-io": "~0.6.0",
+    "angularjs-toaster": "~0.4.8",
+    "angular-local-storage": "~0.1.0"
+  }
 }
