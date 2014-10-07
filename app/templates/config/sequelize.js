@@ -14,7 +14,7 @@ var sequelize = new Sequelize(config.db.dbName, config.db.username, config.db.pa
 
 sequelize.authenticate().complete(function(err) {
     if (!!err) {
-       logger.error('Unable to connect to the database:', err)
+        logger.error('Unable to connect to the database:', err)
     } else {
         logger.info('Database connection has been established successfully.')
     }

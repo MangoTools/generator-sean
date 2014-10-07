@@ -42,116 +42,116 @@ var cryptPassword =function(user, fn) {
 module.exports = function(sequelize, DataTypes) {
 
     var User = sequelize.define('User', {
-            created: {
-                type: DataTypes.DATE,
-                defaultValue: DataTypes.NOW
-            },
-            updated: {
-                type: DataTypes.DATE
-            },
-            firstName: {
-                type: DataTypes.STRING,
-                defaultValue: '',
-                validate: { isValid: validateLocalStrategyProperty}
-            },
-            lastName: {
-                type: DataTypes.STRING,
-                defaultValue: '',
-                validate: { isValid: validateLocalStrategyProperty}
-            },
-            displayName: {
-                type: DataTypes.STRING,
-                defaultValue: ''
-            },
-            email: {
-                type: DataTypes.STRING,
-                defaultValue: '',
-                validate: { isEmail: { msg: 'Please fill a valid email address}' },
-                    isValid: validateLocalStrategyProperty}
-            },
-            username: {
-                type: DataTypes.STRING,
-                unique: true,
-                allowNull: false
-            },
-            password: {
-                type: DataTypes.STRING,
-                default: '',
-                validate: { isValid: validateLocalStrategyPassword}
-            },
-            salt: {
-                type: DataTypes.BLOB('tiny')
-            },
-            provider: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            providerData: {
-                type: DataTypes.TEXT
-            },
-            additionalProvidersData: {
-                type: DataTypes.TEXT
-            },
-            roleTitle: {
-                type: DataTypes.STRING
-            },
-            roleBitMask: {
-                type: DataTypes.INTEGER
-            },
-            resetPasswordToken: {
-                type: DataTypes.STRING
-            },
-            resetPasswordExpires: {
-                type: DataTypes.DATE
-            }
-
+        created: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         },
-        {
-            instanceMethods: {
-                makeSalt: function() {
-                    new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-                },
-                authenticate: function(password){
-                    return this.password === this.hashPassword(password);
-                },
-                hashPassword: function(password) {
-                    if (this.salt && password) {
-                        return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
-                    } else {
-                        return password;
-                    }
-                }
-            },
-            classMethods: {
-                findUniqueUsername : function(username, suffix, callback) {
-                    var _this = this;
-                    var possibleUsername = username + (suffix || '');
+        updated: {
+            type: DataTypes.DATE
+        },
+        firstName: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: { isValid: validateLocalStrategyProperty}
+        },
+        lastName: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: { isValid: validateLocalStrategyProperty}
+        },
+        displayName: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
+        email: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: { isEmail: { msg: 'Please fill a valid email address' },
+                isValid: validateLocalStrategyProperty}
+        },
+        username: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
+            default: '',
+            validate: { isValid: validateLocalStrategyPassword}
+        },
+        salt: {
+            type: DataTypes.BLOB('tiny')
+        },
+        provider: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        providerData: {
+            type: DataTypes.TEXT
+        },
+        additionalProvidersData: {
+            type: DataTypes.TEXT
+        },
+        roleTitle: {
+            type: DataTypes.STRING
+        },
+        roleBitMask: {
+            type: DataTypes.INTEGER
+        },
+        resetPasswordToken: {
+            type: DataTypes.STRING
+        },
+        resetPasswordExpires: {
+            type: DataTypes.DATE
+        }
 
-                    _this.find({
-                        username: possibleUsername
-                    }).done(function (err, user) {
-                        if (!err) {
-                            if (!user) {
-                                callback(possibleUsername);
-                            } else {
-                                return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-                            }
-                        } else {
-                            callback(null);
-                        }
-                    });
+    },
+    {
+        instanceMethods: {
+            makeSalt: function() {
+                new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+            },
+            authenticate: function(password){
+                return this.password === this.hashPassword(password);
+            },
+            hashPassword: function(password) {
+                if (this.salt && password) {
+                    return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+                } else {
+                    return password;
                 }
-            },
-            associate: function(models) {
-            <% if (addArticleExample) { %>
-                User.hasMany(models.Article);
-            <% } %>
-            },
-            hooks: {
-                beforeCreate: cryptPassword
-                // TODO: If create users as bulk
-                //beforeBulkCreate: cryptPasswordArray,
             }
-        });
+        },
+        classMethods: {
+            findUniqueUsername : function(username, suffix, callback) {
+                var _this = this;
+                var possibleUsername = username + (suffix || '');
+
+                _this.find({
+                    username: possibleUsername
+                }).done(function (err, user) {
+                    if (!err) {
+                        if (!user) {
+                            callback(possibleUsername);
+                        } else {
+                            return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+                        }
+                    } else {
+                        callback(null);
+                    }
+                });
+            }
+        },
+        associate: function(models) {
+        <% if (addArticleExample) { %>
+            User.hasMany(models.Article);
+        <% } %>
+        },
+        hooks: {
+            beforeCreate: cryptPassword
+            // TODO: If create users as bulk
+            //beforeBulkCreate: cryptPasswordArray,
+        }
+    });
     return User;
 };
