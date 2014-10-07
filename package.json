@@ -1,6 +1,6 @@
 {
 	"name": "generator-sean",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "SEAN Official Yeoman Generator",
 	"main": "app/index.js",
 	"repository": "https://github.com/MangoTools/generator-sean.git",
