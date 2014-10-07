@@ -5,11 +5,11 @@ module.exports = function(app) {
 	var <%= camelizedPluralName %> = require('../../app/controllers/<%= slugifiedPluralName %>');
 
 	// <%= humanizedPluralName %> Routes
-	app.route('/<%= slugifiedPluralName %>')
+	app.route('api/<%= slugifiedPluralName %>')
 		.get(<%= camelizedPluralName %>.list)
 		.post(users.isAuthenticated, <%= camelizedPluralName %>.create);
 
-	app.route('/<%= slugifiedPluralName %>/:<%= camelizedSingularName %>Id')
+	app.route('api/<%= slugifiedPluralName %>/:<%= camelizedSingularName %>Id')
 		.get(<%= camelizedPluralName %>.read)
 		.put(users.isAuthenticated, <%= camelizedPluralName %>.isOwner, <%= camelizedPluralName %>.update)
 		.delete(users.isAuthenticated, <%= camelizedPluralName %>.isOwner, <%= camelizedPluralName %>.delete);
