@@ -1,15 +1,12 @@
 {
 	"name": "generator-sean",
-	"version": "0.1.9",
+	"version": "0.1.0",
 	"description": "SEAN Official Yeoman Generator",
 	"main": "app/index.js",
-	"repository": "mango.tools/generator-sean",
-	"author": {
-		"name": "mango.tools Team",
-		"email": "support@mango.tools",
-		"url": "https://github.com/MangoTools/generator-sean"
-	},
-	"engines": {
+	"repository": "https://github.com/MangoTools/generator-sean.git",
+  "private": false,
+  "author": "https://github.com/MangoTools/generator-sean/graphs/contributors",
+  "engines": {
 		"node": ">=0.10.0"
 	},
 	"scripts": {
