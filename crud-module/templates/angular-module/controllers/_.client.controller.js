@@ -1,9 +1,11 @@
 'use strict';
 
 // <%= humanizedPluralName %> controller
-angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralName %>Controller', ['$scope', '$stateParams', '$location', 'Authentication', '<%= classifiedPluralName %>',
-	function($scope, $stateParams, $location, Authentication, <%= classifiedPluralName %> ) {
-		$scope.authentication = Authentication;
+angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralName %>Controller', ['$scope', '$stateParams', '$location','Message','User','<%= classifiedPluralName %>',
+	function($scope, $stateParams, $location,Message,User, <%= classifiedPluralName %> ) {
+
+  //get authentified user.
+  $scope.user = User.get()
 
 		// Create new <%= humanizedSingularName %>
 		$scope.create = function() {
@@ -14,19 +16,19 @@ angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralNam
 
 			// Redirect after save
 			<%= camelizedSingularName %>.$save(function(response) {
+        Message.success('<%= classifiedPluralName %>','<%= classifiedSingularName %> successfully created');
 				$location.path('<%= slugifiedPluralName %>/' + response._id);
 
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
+        Message.error('<%= classifiedPluralName %>',errorResponse.data.message);
 			});
 		};
 
 		// Remove existing <%= humanizedSingularName %>
 		$scope.remove = function( <%= camelizedSingularName %> ) {
 			if ( <%= camelizedSingularName %> ) { <%= camelizedSingularName %>.$remove();
-
 				for (var i in $scope.<%= camelizedPluralName %> ) {
 					if ($scope.<%= camelizedPluralName %> [i] === <%= camelizedSingularName %> ) {
 						$scope.<%= camelizedPluralName %>.splice(i, 1);
@@ -34,6 +36,7 @@ angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralNam
 				}
 			} else {
 				$scope.<%= camelizedSingularName %>.$remove(function() {
+        Message.success('<%= classifiedPluralName %>','<%= classifiedSingularName %> successfully removed');
 					$location.path('<%= slugifiedPluralName %>');
 				});
 			}
@@ -44,9 +47,10 @@ angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralNam
 			var <%= camelizedSingularName %> = $scope.<%= camelizedSingularName %> ;
 
 			<%= camelizedSingularName %>.$update(function() {
+        Message.success('<%= classifiedPluralName %>','<%= classifiedSingularName %> successfully updated');
 				$location.path('<%= slugifiedPluralName %>/' + <%= camelizedSingularName %>._id);
 			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
+        Message.error('<%= classifiedPluralName %>',errorResponse.data.message);
 			});
 		};
 
@@ -57,7 +61,7 @@ angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralNam
 
 		// Find existing <%= humanizedSingularName %>
 		$scope.findOne = function() {
-			$scope.<%= camelizedSingularName %> = <%= classifiedPluralName %>.get({ 
+			$scope.<%= camelizedSingularName %> = <%= classifiedPluralName %>.get({
 				<%= camelizedSingularName %>Id: $stateParams.<%= camelizedSingularName %>Id
 			});
 		};

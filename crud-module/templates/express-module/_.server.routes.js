@@ -7,12 +7,12 @@ module.exports = function(app) {
 	// <%= humanizedPluralName %> Routes
 	app.route('/<%= slugifiedPluralName %>')
 		.get(<%= camelizedPluralName %>.list)
-		.post(users.requiresLogin, <%= camelizedPluralName %>.create);
+		.post(users.isAuthenticated, <%= camelizedPluralName %>.create);
 
 	app.route('/<%= slugifiedPluralName %>/:<%= camelizedSingularName %>Id')
 		.get(<%= camelizedPluralName %>.read)
-		.put(users.requiresLogin, <%= camelizedPluralName %>.hasAuthorization, <%= camelizedPluralName %>.update)
-		.delete(users.requiresLogin, <%= camelizedPluralName %>.hasAuthorization, <%= camelizedPluralName %>.delete);
+		.put(users.isAuthenticated, <%= camelizedPluralName %>.isOwner, <%= camelizedPluralName %>.update)
+		.delete(users.isAuthenticated, <%= camelizedPluralName %>.isOwner, <%= camelizedPluralName %>.delete);
 
 	// Finish by binding the <%= humanizedSingularName %> middleware
 	app.param('<%= camelizedSingularName %>Id', <%= camelizedPluralName %>.<%= camelizedSingularName %>ByID);

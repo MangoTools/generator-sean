@@ -100,7 +100,7 @@ exports.<%= camelizedSingularName %>ByID = function(req, res, next, id) {
 /**
 * <%= humanizedSingularName %> authorization middleware
 */
-exports.hasAuthorization = function(req, res, next) {
+exports.isOwner = function(req, res, next) {
   if (req.<%= camelizedSingularName %>.user.id !== req.user.id) {
     return res.status(403).send({
       message: 'User is not authorized'

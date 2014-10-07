@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    _ = require('lodash');
+var _ = require('lodash'),
+  db = require('../../config/sequelize'),
+  errorHandler = require('./errors');
 
 /**
  * Create a <%= humanizedSingularName %>

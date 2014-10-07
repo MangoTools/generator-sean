@@ -5,9 +5,7 @@ angular.module('<%= slugifiedPluralName %>').factory('<%= classifiedPluralName %
 	function($resource) {
 		return $resource('<%= slugifiedPluralName %>/:<%= camelizedSingularName %>Id', { <%= camelizedSingularName %>Id: '@_id'
 		}, {
-			update: {
-				method: 'PUT'
-			}
+			  update: {method: 'PUT'}
 		});
 	}
 ]);
