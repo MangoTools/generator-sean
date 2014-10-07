@@ -2,7 +2,15 @@
 
 angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location','User', 'Authentication','Message', 'Articles',
   function($scope, $stateParams, $location,User, Authentication,Message, Articles) {
-    $scope.user = User.get();
+
+      //Watch user login
+      $scope.user = User.get();
+      $scope.isAuthenticated = Authentication.isAuthenticated();
+
+      $rootScope.$on('Auth',function(){
+          $scope.user = User.get();
+          $scope.isAuthenticated = Authentication.isAuthenticated();
+      });
 
     $scope.create = function() {
       var article = new Articles({

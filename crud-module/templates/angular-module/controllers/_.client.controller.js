@@ -4,8 +4,14 @@
 angular.module('<%= slugifiedPluralName %>').controller('<%= classifiedPluralName %>Controller', ['$scope', '$stateParams', '$location','Message','User','<%= classifiedPluralName %>',
 	function($scope, $stateParams, $location,Message,User, <%= classifiedPluralName %> ) {
 
-  //get authentified user.
-  $scope.user = User.get()
+        //Watch user login
+        $scope.user = User.get();
+        $scope.isAuthenticated = Authentication.isAuthenticated();
+
+        $rootScope.$on('Auth',function(){
+            $scope.user = User.get();
+            $scope.isAuthenticated = Authentication.isAuthenticated();
+        });
 
 		// Create new <%= humanizedSingularName %>
 		$scope.create = function() {
