@@ -2,8 +2,8 @@
 	<div class="page-header">
 		<h1 data-ng-bind="<%= camelizedSingularName %>.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="user._id == <%= camelizedSingularName %>.user._id">
-		<a class="btn btn-primary" href="/<%= slugifiedPluralName %>/{{<%= camelizedSingularName %>._id}}/edit">
+	<div class="pull-right" data-ng-show="user.id == <%= camelizedSingularName %>.user.id">
+		<a class="btn btn-primary" href="/<%= slugifiedPluralName %>/{{<%= camelizedSingularName %>.id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
 		<a class="btn btn-primary" data-ng-click="remove();">
