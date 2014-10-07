@@ -21,7 +21,7 @@ var MeanGenerator = yeoman.generators.Base.extend({
 		console.log(this.yeoman);
 
 		// replace it with a short and sweet description of your generator
-		console.log(chalk.magenta('You\'re using the official MEAN.JS generator.'));
+		console.log(chalk.magenta('You\'re using the official SEAN generator.'));
 	},
 
 	askForApplicationDetails: function() {
@@ -30,7 +30,7 @@ var MeanGenerator = yeoman.generators.Base.extend({
 		var prompts = [{
 			name: 'appName',
 			message: 'What would you like to call your application?',
-			default: 'MEAN'
+			default: 'SEAN'
 		}, {
 			name: 'appDescription',
 			message: 'How would you describe your application?',
