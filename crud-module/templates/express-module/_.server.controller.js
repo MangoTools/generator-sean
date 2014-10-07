@@ -16,7 +16,7 @@ exports.create = function(req, res) {
 
   <%= camelizedSingularName %>.UserId = req.user.id;
 
-  db.<%= classifiedSingularName %>.create(req.body).done(function(err, .<%= camelizedSingularName %>){
+  db.<%= classifiedSingularName %>.create(req.body).done(function(err, <%= camelizedSingularName %>){
     if(err){
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
