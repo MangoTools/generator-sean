@@ -4,30 +4,33 @@
  * Module dependencies.
  */
 var express = require('express'),
-	morgan = require('morgan'),
+    http = require('http'),
+    socketio = require('socket.io'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
+    expressJwt = require('express-jwt'), //https://npmjs.org/package/express-jwt
 	compress = require('compression'),
 	methodOverride = require('method-override'),
-	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
-	mongoStore = require('connect-mongo')({
-		session: session
-	}),
+    db = require('./sequelize'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
 
-module.exports = function(db) {
-	// Initialize express app
-	var app = express();
+//// initialize session store
+//var SequelizeStore = require('connect-sequelize')(session),
+//    modelName = 'Session',
+//    options = {};
 
-	// Globbing model files
-	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
-		require(path.resolve(modelPath));
-	});
+
+
+module.exports = function() {
+    // Initialize express app
+    var app = express();
+    var server = http.createServer(app);
+    var io = socketio.listen(server);
 
 	// Setting application local variables
 	app.locals.title = config.app.title;
@@ -61,10 +64,11 @@ module.exports = function(db) {
 	app.set('view engine', 'server.view.html');
 	app.set('views', './app/views');
 
-	// Environment dependent middleware
+    // Environment dependent middleware
 	if (process.env.NODE_ENV === 'development') {
-		// Enable logger (morgan)
-		app.use(morgan('dev'));
+		// Enable express logger routing
+        logger.debug("Overriding 'Express' logger");
+        app.use(require('morgan')("default", { "stream": logger.stream }));
 
 		// Disable views cache
 		app.set('view cache', false);
@@ -72,7 +76,9 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 	}
 
-	// Request body parsing middleware should be above methodOverride
+    app.use('/api', expressJwt({secret: config.secret}));
+
+    // Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
@@ -83,18 +89,18 @@ module.exports = function(db) {
 	app.enable('jsonp callback');
 
 	// CookieParser should be above session
-	app.use(cookieParser());
+	//app.use(cookieParser());
 
-	// Express MongoDB session storage
-	app.use(session({
-		saveUninitialized: true,
-		resave: true,
-		secret: config.sessionSecret,
-		store: new mongoStore({
-			db: db.connection.db,
-			collection: config.sessionCollection
-		})
-	}));
+	// Express SQL session storage
+
+
+	//app.use(session({
+	//	saveUninitialized: true,
+	//	resave: true,
+	//	secret: config.sessionSecret,
+     //   store: new SequelizeStore(db.sequelize, options, modelName),
+     //   proxy: false // if you do SSL outside of node.
+	//}));
 
 	// use passport session
 	app.use(passport.initialize());
@@ -139,6 +145,9 @@ module.exports = function(db) {
 			error: 'Not Found'
 		});
 	});
+
+    app.set('socketio', io);
+    app.set('server', server);
 
 	return app;
 };

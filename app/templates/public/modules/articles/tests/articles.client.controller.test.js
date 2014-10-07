@@ -53,15 +53,15 @@
 		it('$scope.find() should create an array with at least one article object fetched from XHR', inject(function(Articles) {
 			// Create sample article using the Articles service
 			var sampleArticle = new Articles({
-				title: 'An Article about MEAN',
-				content: 'MEAN rocks!'
+				title: 'An Article about SEAN',
+				content: 'SEAN rocks!'
 			});
 
 			// Create a sample articles array that includes the new article
 			var sampleArticles = [sampleArticle];
 
 			// Set GET response
-			$httpBackend.expectGET('articles').respond(sampleArticles);
+			$httpBackend.expectGET('api/articles').respond(sampleArticles);
 
 			// Run controller functionality
 			scope.find();
@@ -74,15 +74,15 @@
 		it('$scope.findOne() should create an array with one article object fetched from XHR using a articleId URL parameter', inject(function(Articles) {
 			// Define a sample article object
 			var sampleArticle = new Articles({
-				title: 'An Article about MEAN',
-				content: 'MEAN rocks!'
+				title: 'An Article about SEAN',
+				content: 'SEAN rocks!'
 			});
 
 			// Set the URL parameter
 			$stateParams.articleId = '525a8422f6d0f87f0e407a33';
 
 			// Set GET response
-			$httpBackend.expectGET(/articles\/([0-9a-fA-F]{24})$/).respond(sampleArticle);
+			$httpBackend.expectGET(/api\/articles\/([0-9a-fA-F]{24})$/).respond(sampleArticle);
 
 			// Run controller functionality
 			scope.findOne();
@@ -95,23 +95,23 @@
 		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function(Articles) {
 			// Create a sample article object
 			var sampleArticlePostData = new Articles({
-				title: 'An Article about MEAN',
-				content: 'MEAN rocks!'
+				title: 'An Article about SEAN',
+				content: 'SEAN rocks!'
 			});
 
 			// Create a sample article response
 			var sampleArticleResponse = new Articles({
-				_id: '525cf20451979dea2c000001',
-				title: 'An Article about MEAN',
-				content: 'MEAN rocks!'
+				id: '525cf20451979dea2c000001',
+				title: 'An Article about SEAN',
+				content: 'SEAN rocks!'
 			});
 
 			// Fixture mock form input values
-			scope.title = 'An Article about MEAN';
-			scope.content = 'MEAN rocks!';
+			scope.title = 'An Article about SEAN';
+			scope.content = 'SEAN rocks!';
 
 			// Set POST response
-			$httpBackend.expectPOST('articles', sampleArticlePostData).respond(sampleArticleResponse);
+			$httpBackend.expectPOST('api/articles', sampleArticlePostData).respond(sampleArticleResponse);
 
 			// Run controller functionality
 			scope.create();
@@ -122,42 +122,42 @@
 			expect(scope.content).toEqual('');
 
 			// Test URL redirection after the article was created
-			expect($location.path()).toBe('/articles/' + sampleArticleResponse._id);
+			expect($location.path()).toBe('/api/articles/' + sampleArticleResponse.id);
 		}));
 
 		it('$scope.update() should update a valid article', inject(function(Articles) {
 			// Define a sample article put data
 			var sampleArticlePutData = new Articles({
-				_id: '525cf20451979dea2c000001',
-				title: 'An Article about MEAN',
-				content: 'MEAN Rocks!'
+				id: '525cf20451979dea2c000001',
+				title: 'An Article about SEAN',
+				content: 'SEAN Rocks!'
 			});
 
 			// Mock article in scope
 			scope.article = sampleArticlePutData;
 
 			// Set PUT response
-			$httpBackend.expectPUT(/articles\/([0-9a-fA-F]{24})$/).respond();
+			$httpBackend.expectPUT(/api\/articles\/([0-9a-fA-F]{24})$/).respond();
 
 			// Run controller functionality
 			scope.update();
 			$httpBackend.flush();
 
 			// Test URL location to new object
-			expect($location.path()).toBe('/articles/' + sampleArticlePutData._id);
+			expect($location.path()).toBe('/api/articles/' + sampleArticlePutData.id);
 		}));
 
 		it('$scope.remove() should send a DELETE request with a valid articleId and remove the article from the scope', inject(function(Articles) {
 			// Create new article object
 			var sampleArticle = new Articles({
-				_id: '525a8422f6d0f87f0e407a33'
+				id: '525a8422f6d0f87f0e407a33'
 			});
 
 			// Create new articles array and include the article
 			scope.articles = [sampleArticle];
 
 			// Set expected DELETE response
-			$httpBackend.expectDELETE(/articles\/([0-9a-fA-F]{24})$/).respond(204);
+			$httpBackend.expectDELETE(/api\/articles\/([0-9a-fA-F]{24})$/).respond(204);
 
 			// Run controller functionality
 			scope.remove(sampleArticle);

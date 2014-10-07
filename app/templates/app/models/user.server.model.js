@@ -3,144 +3,153 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	crypto = require('crypto');
+var crypto = require('crypto');
 
 /**
  * A Validation function for local strategy properties
  */
 var validateLocalStrategyProperty = function(property) {
-	return ((this.provider !== 'local' && !this.updated) || property.length);
+    if( ((this.provider !== 'local' && !this.updated) || property.length!==0) === false ){
+        throw new Error('Local strategy failed');
+    }
 };
 
 /**
  * A Validation function for local strategy password
  */
 var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 6));
+    if( (this.provider !== 'local' || (password && password.length > 6)) === false ){
+        throw new Error('One field is missing');
+    }
 };
 
 /**
- * User Schema
+ * hash the password
+ * @param user
+ * @param fn
  */
-var UserSchema = new Schema({
-	firstName: {
-		type: String,
-		trim: true,
-		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
-	},
-	lastName: {
-		type: String,
-		trim: true,
-		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
-	},
-	displayName: {
-		type: String,
-		trim: true
-	},
-	email: {
-		type: String,
-		trim: true,
-		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
-	},
-	username: {
-		type: String,
-		unique: 'testing error message',
-		required: 'Please fill in a username',
-		trim: true
-	},
-	password: {
-		type: String,
-		default: '',
-		validate: [validateLocalStrategyPassword, 'Password should be longer']
-	},
-	salt: {
-		type: String
-	},
-	provider: {
-		type: String,
-		required: 'Provider is required'
-	},
-	providerData: {},
-	additionalProvidersData: {},
-	roles: {
-		type: [{
-			type: String,
-			enum: ['user', 'admin']
-		}],
-		default: ['user']
-	},
-	updated: {
-		type: Date
-	},
-	created: {
-		type: Date,
-		default: Date.now
-	},
-	/* For reset password */
-	resetPasswordToken: {
-		type: String
-	},
-  	resetPasswordExpires: {
-  		type: Date
-  	}
-});
-
-/**
- * Hook a pre save method to hash the password
- */
-UserSchema.pre('save', function(next) {
-	if (this.password && this.password.length > 6) {
-		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-		this.password = this.hashPassword(this.password);
-	}
-
-	next();
-});
-
-/**
- * Create instance method for hashing a password
- */
-UserSchema.methods.hashPassword = function(password) {
-	if (this.salt && password) {
-		return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
-	} else {
-		return password;
-	}
+var cryptPassword =function(user, fn) {
+    if (user.password && user.password.length > 6) {
+        user.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+        user.password = user.hashPassword(user.password);
+    }
+    fn(null, user);
 };
 
 /**
- * Create instance method for authenticating user
+ * Article Schema
  */
-UserSchema.methods.authenticate = function(password) {
-	return this.password === this.hashPassword(password);
+module.exports = function(sequelize, DataTypes) {
+
+    var User = sequelize.define('User', {
+            created: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW
+            },
+            updated: {
+                type: DataTypes.DATE
+            },
+            firstName: {
+                type: DataTypes.STRING,
+                defaultValue: '',
+                validate: { isValid: validateLocalStrategyProperty}
+            },
+            lastName: {
+                type: DataTypes.STRING,
+                defaultValue: '',
+                validate: { isValid: validateLocalStrategyProperty}
+            },
+            displayName: {
+                type: DataTypes.STRING,
+                defaultValue: ''
+            },
+            email: {
+                type: DataTypes.STRING,
+                defaultValue: '',
+                validate: { isEmail: { msg: 'Please fill a valid email address}' },
+                    isValid: validateLocalStrategyProperty}
+            },
+            username: {
+                type: DataTypes.STRING,
+                unique: true,
+                allowNull: false
+            },
+            password: {
+                type: DataTypes.STRING,
+                default: '',
+                validate: { isValid: validateLocalStrategyPassword}
+            },
+            salt: {
+                type: DataTypes.BLOB('tiny')
+            },
+            provider: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            providerData: {
+                type: DataTypes.TEXT
+            },
+            additionalProvidersData: {
+                type: DataTypes.TEXT
+            },
+            roleTitle: {
+                type: DataTypes.STRING
+            },
+            roleBitMask: {
+                type: DataTypes.INTEGER
+            },
+            resetPasswordToken: {
+                type: DataTypes.STRING
+            },
+            resetPasswordExpires: {
+                type: DataTypes.DATE
+            }
+
+        },
+        {
+            instanceMethods: {
+                makeSalt: function() {
+                    new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+                },
+                authenticate: function(password){
+                    return this.password === this.hashPassword(password);
+                },
+                hashPassword: function(password) {
+                    if (this.salt && password) {
+                        return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+                    } else {
+                        return password;
+                    }
+                }
+            },
+            classMethods: {
+                findUniqueUsername : function(username, suffix, callback) {
+                    var _this = this;
+                    var possibleUsername = username + (suffix || '');
+
+                    _this.find({
+                        username: possibleUsername
+                    }).done(function (err, user) {
+                        if (!err) {
+                            if (!user) {
+                                callback(possibleUsername);
+                            } else {
+                                return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+                            }
+                        } else {
+                            callback(null);
+                        }
+                    });
+                }
+            },
+            associate: function(models) {
+                User.hasMany(models.Article);
+            },
+            hooks: {
+                beforeCreate: cryptPassword
+                // TODO: If create users as bulk
+                //beforeBulkCreate: cryptPasswordArray,
+            }
+        });
+    return User;
 };
-
-/**
- * Find possible not used username
- */
-UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-	var _this = this;
-	var possibleUsername = username + (suffix || '');
-
-	_this.findOne({
-		username: possibleUsername
-	}, function(err, user) {
-		if (!err) {
-			if (!user) {
-				callback(possibleUsername);
-			} else {
-				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-			}
-		} else {
-			callback(null);
-		}
-	});
-};
-
-mongoose.model('User', UserSchema);

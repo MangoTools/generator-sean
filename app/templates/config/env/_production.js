@@ -1,7 +1,13 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/<%= slugifiedAppName %>',
+    db: {
+        dbName: process.env.DBNAME  || '<%= slugifiedAppName %>-prod',
+        username : process.env.DBUSER  || 'SeanDB',
+        password : process.env.DBPASSWORD || 'HU7XQQBNWq',
+        dialect: "postgres", // 'sqlite', 'postgres', 'mariadb','mysql'
+        port : 5432 //    5432 for postgres, 3306 for mysql and mariaDB ,
+    },
 	assets: {
 		lib: {
 			css: [
@@ -10,11 +16,11 @@ module.exports = {
 			],
 			js: [
 				'public/lib/angular/angular.min.js',
-				'public/lib/angular-resource/angular-resource.js', <% if (angularCookies) { %>
-				'public/lib/angular-cookies/angular-cookies.js', <% } if (angularAnimate) { %>
-				'public/lib/angular-animate/angular-animate.js', <% } if (angularTouch) { %>
-				'public/lib/angular-touch/angular-touch.js', <% } if (angularSanitize) { %>
-				'public/lib/angular-sanitize/angular-sanitize.js', <% } %>
+				'public/lib/angular-resource/angular-resource.min.js', <% if (angularCookies) { %>
+                'public/lib/angular-cookies/angular-cookies.js', <% } if (angularAnimate) { %>
+                'public/lib/angular-animate/angular-animate.js', <% } if (angularTouch) { %>
+                'public/lib/angular-touch/angular-touch.js', <% } if (angularSanitize) { %>
+                'public/lib/angular-sanitize/angular-sanitize.js', <% } %>
 				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
 				'public/lib/angular-ui-utils/ui-utils.min.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js'

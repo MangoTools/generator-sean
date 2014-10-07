@@ -4,9 +4,7 @@
  * Module dependencies.
  */
 var should = require('should'),
-	mongoose = require('mongoose'),
-	User = mongoose.model('User'),
-	Article = mongoose.model('Article');
+    db = require('../../config/sequelize');
 
 /**
  * Globals
@@ -18,29 +16,28 @@ var user, article;
  */
 describe('Article Model Unit Tests:', function() {
 	beforeEach(function(done) {
-		user = new User({
+		user = db.User.build({
 			firstName: 'Full',
 			lastName: 'Name',
 			displayName: 'Full Name',
 			email: 'test@test.com',
 			username: 'username',
-			password: 'password'
+			password: 'password',
+            provider: 'local'
 		});
-
-		user.save(function() {
-			article = new Article({
+        user.save().done(function(err) {
+			article = db.Article.build({
 				title: 'Article Title',
 				content: 'Article Content',
 				user: user
 			});
-
-			done();
+            done(err);
 		});
 	});
 
 	describe('Method Save', function() {
 		it('should be able to save without problems', function(done) {
-			return article.save(function(err) {
+			return article.save().done(function(err, article) {
 				should.not.exist(err);
 				done();
 			});
@@ -49,16 +46,16 @@ describe('Article Model Unit Tests:', function() {
 		it('should be able to show an error when try to save without title', function(done) {
 			article.title = '';
 
-			return article.save(function(err) {
-				should.exist(err);
+			return article.save().done(function(err, article) {
+                should.exist(err);
 				done();
 			});
 		});
 	});
 
 	afterEach(function(done) {
-		Article.remove().exec();
-		User.remove().exec();
+        db.Article.destroy().done(function(err){/*console.log(err);*/});
+		db.User.destroy().done(function(err){/*console.log(err);*/});
 		done();
 	});
 });
