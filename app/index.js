@@ -34,11 +34,11 @@ var SeanGenerator = yeoman.generators.Base.extend({
 		}, {
 			name: 'appDescription',
 			message: 'How would you describe your application?',
-			default: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js'
+			default: 'Full-Stack JavaScript with SQL, Express, AngularJS, and Node.js'
 		}, {
 			name: 'appKeywords',
 			message: 'How would you describe your application in comma seperated key words?',
-			default: 'MongoDB, Express, AngularJS, Node.js'
+			default: 'SQL, Express, AngularJS, Node.js'
 		}, {
 			name: 'appAuthor',
 			message: 'What is your company/author name?'
