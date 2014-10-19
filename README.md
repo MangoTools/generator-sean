@@ -34,7 +34,7 @@ Once you have *yo* installed, you will need to install the MEAN.JS generator as 
 
 
 ```
-$ npm install -g generator-meanjs
+$ npm install -g generator-sean
 ```
 
 You are now ready to get started with the MEAN.JS generator. The generator will help you create a MEAN.JS application, a CRUD module, Angular Module, and other AngularJS/Express entities.
