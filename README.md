@@ -7,6 +7,9 @@ SEAN is an full-stack javascript open-source framework based on SQL (Sequelize E
 It provides everything needed  to build applications with [Sequilize](http://www.sequelize.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 This project  found it's root on [MEAN.JS](http://meanjs.org) project.
 
+Thanks for your support:
+[the Mango tools team](http://mango.tools)
+
 ## Overview
 
 SEAN uses [Yeoman](http://yeoman.io/index.html) generator for scaffolding application and rapid development. Yeoman generators provides a powerful, easy to maintain, and open solution for scaffolding applications.
