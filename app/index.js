@@ -114,11 +114,10 @@ var SeanGenerator = yeoman.generators.Base.extend({
 		this.copy('app/controllers/users.server.controller.js');
 		this.copy('app/controllers/errors.server.controller.js');
 		this.directory('app/controllers/users');
-		this.copy('app/models/user.server.model.js');
 		this.copy('app/routes/core.server.routes.js');
 		this.copy('app/routes/users.server.routes.js');
-    this.copy('app/services/token.server.service.js');
-    this.copy('app/tests/user.server.model.test.js');
+        this.copy('app/services/token.server.service.js');
+        this.copy('app/tests/user.server.model.test.js');
 
 		// Create public folders
 		this.mkdir('public');
@@ -128,7 +127,7 @@ var SeanGenerator = yeoman.generators.Base.extend({
 		this.copy('public/application.js');
 		this.copy('public/humans.txt');
 		this.copy('public/robots.txt');
-    this.copy('public/roleManager.js');
+        this.copy('public/roleManager.js');
 
 		// Copy public folder modules
 		this.directory('public/modules/users');
@@ -153,9 +152,9 @@ var SeanGenerator = yeoman.generators.Base.extend({
 		this.copy('config/init.js');
 		this.copy('config/express.js');
 		this.copy('config/passport.js');
-    this.copy('config/logger.js');
-    this.copy('config/roleManager.js');
-    this.copy('config/sequelize.js');
+        this.copy('config/logger.js');
+        this.copy('config/roleManager.js');
+        this.copy('config/sequelize.js');
 
 		// Copy project files
 		this.copy('karma.conf.js');
